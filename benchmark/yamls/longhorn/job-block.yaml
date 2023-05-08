@@ -1,0 +1,22 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: longhorn-dbench-job
+spec:
+  template:
+    metadata:
+      labels:
+        app: dbench-longhorn
+    spec:
+      nodeName: k8s-node2
+      containers:
+      - name: dbench
+        image: zayashv/dbench:latest
+        volumeMounts:
+        - name: mypvc
+          mountPath: /tmp
+      restartPolicy: Never
+      volumes:
+      - name: mypvc
+        persistentVolumeClaim:
+          claimName: longhorn-pvc
